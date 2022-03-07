@@ -6,7 +6,6 @@ import { LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { HealthCheckProtocol } from 'aws-cdk-lib/aws-globalaccelerator';
 import { GenericTable } from './GenericTable';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
-import { handler } from '../services/node-lambda/hello';
 
 export class SpaceStack extends Stack {
     
@@ -27,10 +26,10 @@ export class SpaceStack extends Stack {
             handler: 'hello.main'
         })
 
-    const helloLambdaNodeJs = new NodejsFunction(this, 'helloLambdaNodeJs', {
-        entry: (join(__dirname, '..', 'services', 'node-lambda', 'hello.ts')),
-        handler: 'handler'
-    })
+        const helloLambdaNodeJs = new NodejsFunction(this, 'helloLambdaNodeJs', {
+            entry: (join(__dirname, '..', 'services', 'node-lambda', 'hello.ts')),
+            handler: 'handler'
+        });
 
         //Hello Api Lambda integration:
         const helloLambdaIntegration = new LambdaIntegration(helloLambda) 
