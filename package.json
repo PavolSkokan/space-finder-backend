@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@types/uuid": "^8.3.4",
+    "aws-sdk": "^2.1087.0",
     "esbuild": "^0.14.25",
     "uuid": "^8.3.2"
   }
