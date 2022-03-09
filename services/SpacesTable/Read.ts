@@ -1,6 +1,5 @@
 import { DynamoDB }  from 'aws-sdk'
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
-import { v4 } from 'uuid'
 
 const TABLE_NAME = process.env.TABLE_NAME;
 const dbClient = new DynamoDB.DocumentClient();
@@ -13,23 +12,14 @@ async function handler(event: APIGatewayEvent, context: Context): Promise<APIGat
         body: 'Hello from DynamoDb'
     }
 
-    const item = typeof event.body == 'object' ? event.body : JSON.parse(event.body);
-    item.spaceId = v4();
-
-    // const item = {
-    //     spaceId: v4()
-    // }
-
     try {
-        await dbClient.put({
-            TableName: TABLE_NAME!,
-            Item: item
-        }).promise()
+        const queryResponse = await dbClient.scan({
+            TableName: TABLE_NAME!
+        }).promise();
+        result.body = JSON.stringify(queryResponse)
     } catch (error:any) {
         result.body = `Error occured> ${error.message}`
     };
-    
-    result.body = JSON.stringify(`Created item with id: ${item.spaceID}`)
     
     return result
 }
