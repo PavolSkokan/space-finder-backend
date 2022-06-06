@@ -527,6 +527,28 @@
           {
             "AttributeName": "spaceId",
             "AttributeType": "S"
+          },
+          {
+            "AttributeName": "location",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "location",
+            "KeySchema": [
+              {
+                "AttributeName": "location",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
           }
         ],
         "ProvisionedThroughput": {
@@ -597,7 +619,18 @@
                   ]
                 },
                 {
-                  "Ref": "AWS::NoValue"
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SpacesTable8A997355",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
                 }
               ]
             }
@@ -711,7 +744,18 @@
                   ]
                 },
                 {
-                  "Ref": "AWS::NoValue"
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SpacesTable8A997355",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
                 }
               ]
             }
@@ -736,7 +780,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "ff30486fd430d21641f60b8a2d027daccfed58021d109913e54b328530610e30.zip"
+          "S3Key": "d2b51a207292513fa24fa9dfe46e1e564e983e9927ed83cd87fe7efc3c2019a2.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -761,7 +805,7 @@
       ],
       "Metadata": {
         "aws:cdk:path": "Space-finder/SpacesTable-Read/Resource",
-        "aws:asset:path": "asset.ff30486fd430d21641f60b8a2d027daccfed58021d109913e54b328530610e30",
+        "aws:asset:path": "asset.d2b51a207292513fa24fa9dfe46e1e564e983e9927ed83cd87fe7efc3c2019a2",
         "aws:asset:is-bundled": true,
         "aws:asset:property": "Code"
       }

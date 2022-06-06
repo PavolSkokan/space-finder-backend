@@ -17,7 +17,9 @@ async function handler(event: APIGatewayEvent, context: Context): Promise<APIGat
         if (event.queryStringParameters) {
             if (PRIMARY_KEY! in event.queryStringParameters) {
                 result.body = await queryWithPrimaryPartition(event.queryStringParameters);
-            } 
+            } else {
+                result.body = await queryWithSecondaryPartition(event.queryStringParameters);
+            }
         } else {
             result.body = await scanTable();
         }
@@ -26,6 +28,23 @@ async function handler(event: APIGatewayEvent, context: Context): Promise<APIGat
     };
     
     return result
+}
+
+async function queryWithSecondaryPartition(queryParams: APIGatewayProxyEventQueryStringParameters) {
+    const queryKey = Object.keys(queryParams)[0];
+    const queryValue = queryParams[queryKey];
+    const queryResponse = await dbClient.query({
+        TableName: TABLE_NAME!,
+        IndexName: queryKey,    
+        KeyConditionExpression: '#zz = :zzzz', 
+        ExpressionAttributeNames: {
+            '#zz': queryKey
+        },
+        ExpressionAttributeValues: {
+            ':zzzz': queryValue
+        }
+    }).promise()
+    return JSON.stringify(queryResponse.Items)
 }
 
 async function queryWithPrimaryPartition(queryParams: APIGatewayProxyEventQueryStringParameters) {
@@ -41,8 +60,8 @@ async function queryWithPrimaryPartition(queryParams: APIGatewayProxyEventQueryS
                     }
                 }).promise();
                 return JSON.stringify(queryResponse.Items);
-            } 
-}
+} 
+
 
 async function scanTable () {
     const queryResponse = await dbClient.scan({
