@@ -2,10 +2,16 @@
 GET {{endpoint}}/hello/
 ###
 
-GET {{endpoint}}/spaces?spaceId=ff5540b3-7380-4b16-b5f0-30e798ae723c
+GET {{endpoint}}/spaces?spaceId=bea51db0-ece1-4bfd-a5ea-f6fdf8ccbdc4
 ###
 
-GET {{endpoint}}/spaces?spaceId=ff5540b3-7380-4b16-b5f0-30e798ae723c
+GET {{endpoint}}/spaces
+###
+
+GET {{endpoint}}/spaces?location=London
+###
+
+GET {{endpoint}}/spaces?location=Paris
 ###
 
 GET {{endpoint}}/spaces
