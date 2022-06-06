@@ -35,7 +35,7 @@ async function queryWithSecondaryPartition(queryParams: APIGatewayProxyEventQuer
     const queryValue = queryParams[queryKey];
     const queryResponse = await dbClient.query({
         TableName: TABLE_NAME!,
-        IndexName: queryKey,    
+        IndexName: queryKey,
         KeyConditionExpression: '#zz = :zzzz', 
         ExpressionAttributeNames: {
             '#zz': queryKey
