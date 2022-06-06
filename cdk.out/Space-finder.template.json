@@ -60,7 +60,7 @@
         "aws:cdk:path": "Space-finder/SpaceApi/Account"
       }
     },
-    "SpaceApiDeploymentA2B9E76585197fe86c02d77901ab9dbe8f9791f4": {
+    "SpaceApiDeploymentA2B9E76582f22c0e2815a8c5d9b5bae88599765c": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -71,8 +71,10 @@
       "DependsOn": [
         "SpaceApihelloGET65983C27",
         "SpaceApihelloDF776653",
+        "SpaceApispacesDELETEC413A31B",
         "SpaceApispacesGET6C083CB2",
         "SpaceApispacesPOST1DDB27B3",
+        "SpaceApispacesPUTD4F9CA05",
         "SpaceApispacesD5EE855F"
       ],
       "Metadata": {
@@ -86,7 +88,7 @@
           "Ref": "SpaceApi1B373D2B"
         },
         "DeploymentId": {
-          "Ref": "SpaceApiDeploymentA2B9E76585197fe86c02d77901ab9dbe8f9791f4"
+          "Ref": "SpaceApiDeploymentA2B9E76582f22c0e2815a8c5d9b5bae88599765c"
         },
         "StageName": "prod"
       },
@@ -512,6 +514,260 @@
       },
       "Metadata": {
         "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/GET/Resource"
+      }
+    },
+    "SpaceApispacesPUTApiPermissionSpacefinderSpaceApi0274A94DPUTspacesEEAD7E00": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableUpdate931099D2",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/PUT/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/PUT/ApiPermission.SpacefinderSpaceApi0274A94D.PUT..spaces"
+      }
+    },
+    "SpaceApispacesPUTApiPermissionTestSpacefinderSpaceApi0274A94DPUTspacesE6E089FE": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableUpdate931099D2",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/PUT/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/PUT/ApiPermission.Test.SpacefinderSpaceApi0274A94D.PUT..spaces"
+      }
+    },
+    "SpaceApispacesPUTD4F9CA05": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTableUpdate931099D2",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/PUT/Resource"
+      }
+    },
+    "SpaceApispacesDELETEApiPermissionSpacefinderSpaceApi0274A94DDELETEspaces6BB660C2": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableDeleteD71428D7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/DELETE/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/DELETE/ApiPermission.SpacefinderSpaceApi0274A94D.DELETE..spaces"
+      }
+    },
+    "SpaceApispacesDELETEApiPermissionTestSpacefinderSpaceApi0274A94DDELETEspacesBB6271A7": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableDeleteD71428D7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/DELETE/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/DELETE/ApiPermission.Test.SpacefinderSpaceApi0274A94D.DELETE..spaces"
+      }
+    },
+    "SpaceApispacesDELETEC413A31B": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTableDeleteD71428D7",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-finder/SpaceApi/Default/spaces/DELETE/Resource"
       }
     },
     "SpacesTable8A997355": {
