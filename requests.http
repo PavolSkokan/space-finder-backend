@@ -17,11 +17,25 @@ GET {{endpoint}}/spaces?location=Paris
 GET {{endpoint}}/spaces
 ###
 
+GET {{endpoint}}/spaces?spaceId=2acf4b91-44c8-4ae1-9cde-258b6f1b8616
+###
+
 POST {{endpoint}}/spaces/
 Content-Type: application/json
 
 {
-    "Location": "London",
-    "name": "3rd Best Location"
+    "location": "Paris",
+    "name": "Interesting for shopping"
 }
+###
+
+PUT {{endpoint}}/spaces?spaceId=2acf4b91-44c8-4ae1-9cde-258b6f1b8616
+Content-Type: application/json
+
+{
+    "location": "Paris-Ile"
+}
+###
+
+DELETE {{endpoint}}/spaces?spaceId=2acf4b91-44c8-4ae1-9cde-258b6f1b8616
 ###
