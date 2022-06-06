@@ -1,5 +1,5 @@
 import { DynamoDB }  from 'aws-sdk'
-import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
+import { APIGatewayEvent, APIGatewayProxyEventQueryStringParameters, APIGatewayProxyResult, Context } from 'aws-lambda'
 
 const TABLE_NAME = process.env.TABLE_NAME;
 const PRIMARY_KEY = process.env.PRIMARY_KEY;
@@ -16,7 +16,20 @@ async function handler(event: APIGatewayEvent, context: Context): Promise<APIGat
     try {
         if (event.queryStringParameters) {
             if (PRIMARY_KEY! in event.queryStringParameters) {
-                const keyValue = event.queryStringParameters[PRIMARY_KEY!];
+                result.body = await queryWithPrimaryPartition(event.queryStringParameters);
+            } 
+        } else {
+            result.body = await scanTable();
+        }
+    } catch (error:any) {
+        result.body = `Error occured> ${error.message}`
+    };
+    
+    return result
+}
+
+async function queryWithPrimaryPartition(queryParams: APIGatewayProxyEventQueryStringParameters) {
+    const keyValue = queryParams[PRIMARY_KEY!];
                 const queryResponse = await dbClient.query({
                     TableName: TABLE_NAME!,    
                     KeyConditionExpression: '#zz = :zzzz', 
@@ -27,19 +40,15 @@ async function handler(event: APIGatewayEvent, context: Context): Promise<APIGat
                         ':zzzz': keyValue
                     }
                 }).promise();
-                result.body = JSON.stringify(queryResponse);
+                return JSON.stringify(queryResponse.Items);
             } 
-        } else {
-            const queryResponse = await dbClient.scan({
-                TableName: TABLE_NAME!
-            }).promise();
-            result.body = JSON.stringify(queryResponse)
-        }
-    } catch (error:any) {
-        result.body = `Error occured> ${error.message}`
-    };
-    
-    return result
+}
+
+async function scanTable () {
+    const queryResponse = await dbClient.scan({
+        TableName: TABLE_NAME!
+    }).promise();
+    return JSON.stringify(queryResponse.Items)
 }
 
 export { handler }
