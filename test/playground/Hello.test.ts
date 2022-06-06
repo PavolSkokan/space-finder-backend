@@ -3,7 +3,7 @@ import { handler } from '../../services/SpacesTable/Read'
 
 const event: APIGatewayProxyEvent = {
     queryStringParameters: {
-        Location: 'London'
+        location: 'London'
     } 
 } as any
 
