@@ -30,7 +30,7 @@ async function handler(event: APIGatewayEvent, context: Context): Promise<APIGat
         result.body = JSON.stringify(`Created item with id: ${item.spaceID}`)
     } catch (error:any) {
         result.statusCode = 403;
-        result.body = `Error occured> ${error.message}`
+        result.body = error.message;
     };
     
         
